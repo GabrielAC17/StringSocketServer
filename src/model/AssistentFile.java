@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AssistentFile {
-
+ 
 	private String folderFile;
-	private String nameFile;
+	private String nameFile; 
 	private List<String> linesFiles = new ArrayList<>();
 	private File file;
 	/**

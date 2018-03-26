@@ -1,13 +1,12 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import controller.ClientConnection;
 
 public class ServerInfo {
 	private static ArrayList<ClientConnection> clientes = new ArrayList<ClientConnection>();
-	private static String currentInfo = "";
+	private static String currentInfo = "No data";
 
 	public static String getCurrentInfo() {
 		return currentInfo;

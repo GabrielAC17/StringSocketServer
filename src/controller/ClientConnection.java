@@ -1,10 +1,8 @@
 package controller;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
@@ -37,8 +35,10 @@ public class ClientConnection extends Thread{
     public static final String PATH_CHAVE_PUBLICA = "C:/keys/public.key";
 	
 	private Socket socket;
-	private BufferedReader input;
-	private BufferedWriter output;
+	//private BufferedReader input;
+	//private BufferedWriter output;
+	private InputStream input;
+	private OutputStream output;
 	private boolean stopThread = false;
 	//private MessageDigest digest;
 	private ObjectMapper map = new ObjectMapper();
@@ -49,8 +49,10 @@ public class ClientConnection extends Thread{
 		try
 		{
 
-			output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			//output = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			//input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			input = socket.getInputStream();
+			output = socket.getOutputStream();
 		}
 		catch (IOException e)
 		{
@@ -74,7 +76,7 @@ public class ClientConnection extends Thread{
 		        final byte[] textoCriptografado = criptografa(msg, key);
 //		        inputStream.close();
 		        
-		        m.setMessage(textoCriptografado);
+		        m.setText(textoCriptografado);
 		        
 		        //hash
 				MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -85,7 +87,23 @@ public class ClientConnection extends Thread{
 				
 				String valueencoded = Base64.getEncoder().encodeToString(obj.getBytes());
 				
-				output.write(valueencoded + "\n");
+				
+				byte[] valueAsBytes = valueencoded.getBytes();
+				
+				int length = valueAsBytes.length;
+				
+				byte[] valuelength = new byte[4];
+				
+				valuelength[0] = (byte)(length & 0xff);
+		        valuelength[1] = (byte)((length >> 8) & 0xff);
+		        valuelength[2] = (byte)((length >> 16) & 0xff);
+		        valuelength[3] = (byte)((length >> 24) & 0xff);
+		        
+		        output.write(valuelength);
+		        
+		        output.write(valueAsBytes);
+				
+				//output.write((valueencoded + "\n").getBytes());
 				//output.write(msg + "\n");
 				break;
 			}
@@ -122,8 +140,21 @@ public class ClientConnection extends Thread{
 			}
 			try
 			{
-				String m = input.readLine();
-				if (m == null || m == "" || m == "pong"){
+				byte[] lenBytes = new byte[4];
+				input.read(lenBytes);
+				int length =  (((lenBytes[3] & 0xff) << 24) | ((lenBytes[2] & 0xff) << 16) |
+		                  ((lenBytes[1] & 0xff) << 8) | (lenBytes[0] & 0xff));
+				
+				String m = "";
+				byte[] b = new byte[length];
+				
+				if(input.read(b) > 0) {
+					 m = new String(b, 0, length);
+ 					if (m == null || m == "" || m == "pong"){
+						continue;
+					}
+				}
+				else {
 					continue;
 				}
 				
@@ -138,7 +169,7 @@ public class ClientConnection extends Thread{
 		        
 		        //hash
 				MessageDigest digest = MessageDigest.getInstance("SHA-256");
-				byte[] hash = digest.digest(response.getMessage());
+				byte[] hash = digest.digest(response.getText());
 				
 				String hashGerado = new String(hash);
 				String hashCliente = new String(response.getHash());
@@ -150,12 +181,12 @@ public class ClientConnection extends Thread{
 					if (new String().toUpperCase().equals("MANDAINFO")) {
 						
 						send(ServerInfo.getCurrentInfo(),chave);
-						System.out.println("Cliente " + socket.getInetAddress()+": " + response.getMessage());
+						System.out.println("Cliente " + socket.getInetAddress()+": " + response.getText());
 					}
 						
 				}
 				else {
-					System.out.println("Cliente " + socket.getInetAddress()+": " + response.getMessage());
+					System.out.println("Cliente " + socket.getInetAddress()+": " + response.getText());
 					System.out.println("Perda de dados detectada!");
 				}
 					

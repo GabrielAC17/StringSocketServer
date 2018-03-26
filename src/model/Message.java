@@ -2,16 +2,16 @@ package model;
 
 public class Message{
 	
-	private byte[] message;
+	private byte[] text;
 	private byte[] hash;
 	private String chave;
 
-	public byte[] getMessage() {
-		return message;
+	public byte[] getText() {
+		return text;
 	}
 
-	public void setMessage(byte[] message) {
-		this.message = message;
+	public void setText(byte[] text) {
+		this.text = text;
 	}
 
 	public byte[] getHash() {
