@@ -10,6 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
@@ -86,7 +87,6 @@ public class ClientConnection extends Thread{
 				String obj = map.writeValueAsString(m);
 				
 				String valueencoded = Base64.getEncoder().encodeToString(obj.getBytes());
-				
 				
 				byte[] valueAsBytes = valueencoded.getBytes();
 				
@@ -175,10 +175,9 @@ public class ClientConnection extends Thread{
 				String hashCliente = new String(response.getHash());
 				
 				if (hashGerado.equals(hashCliente)) {
-					X509EncodedKeySpec spec = new X509EncodedKeySpec(response.getChave().getBytes());
-					KeyFactory keyFactory = KeyFactory.getInstance("RSA");
-					PublicKey chave = keyFactory.generatePublic(spec);
-					if (new String().toUpperCase().equals("MANDAINFO")) {
+					EncodedKeySpec spec = new X509EncodedKeySpec(response.getChave());
+					PublicKey chave = KeyFactory.getInstance("RSA").generatePublic(spec);
+					if (new String(response.getText()).toUpperCase().equals("MANDAINFO")) {
 						
 						send(ServerInfo.getCurrentInfo(),chave);
 						System.out.println("Cliente " + socket.getInetAddress()+": " + response.getText());

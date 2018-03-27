@@ -4,7 +4,7 @@ public class Message{
 	
 	private byte[] text;
 	private byte[] hash;
-	private String chave;
+	private byte[] chave;
 
 	public byte[] getText() {
 		return text;
@@ -18,11 +18,11 @@ public class Message{
 		return hash;
 	}
 
-	public String getChave() {
+	public byte[] getChave() {
 		return chave;
 	}
 
-	public void setChave(String chave) {
+	public void setChave(byte[] chave) {
 		this.chave = chave;
 	}
 
