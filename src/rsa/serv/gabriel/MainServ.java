@@ -1,10 +1,11 @@
-package controller;
+package rsa.serv.gabriel;
 
-public class Main {
+public class MainServ {
+
 
 	public static void main(String[] args) {
 		System.out.println("Iniciando conexão com Arduíno");
-		//iniciarArduino();
+		iniciarArduino();
 		System.out.println("Iniciando servidor");
 		iniciarServidor(8888);
 	}
@@ -15,8 +16,9 @@ public class Main {
 		System.out.println("Porta "+ port);
 		server.start();
 	}
-	
 	public static void iniciarArduino() {
-		 TwoWaySerialComm com = new TwoWaySerialComm("COM5");
+		 TwoWaySerialComm com = new TwoWaySerialComm("COM3");
 	}
+	
 }
+

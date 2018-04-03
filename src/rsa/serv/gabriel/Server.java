@@ -1,4 +1,4 @@
-package controller;
+package rsa.serv.gabriel;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -6,7 +6,6 @@ import java.net.Socket;
 
 import javax.swing.JOptionPane;
 
-import model.ServerInfo;
 
 public class Server extends Thread{
 	private ServerSocket server;

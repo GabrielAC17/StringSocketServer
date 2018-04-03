@@ -1,4 +1,4 @@
-package controller;
+package rsa.serv.gabriel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,12 +6,9 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
-
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
-import model.AssistentFile;
-import model.ServerInfo;
 
 public class TwoWaySerialComm
 {
@@ -42,7 +39,7 @@ public class TwoWaySerialComm
         CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
         if ( portIdentifier.isCurrentlyOwned() )
         {
-            System.out.println("Error: Port is currently in use");
+            System.out.println("Essa porta parece estar em uso por outro programa, verifique se há algo usando-a e tente novamente.");
         }
         else
         {

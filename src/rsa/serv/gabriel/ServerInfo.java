@@ -1,8 +1,7 @@
-package model;
+package rsa.serv.gabriel;
 
 import java.util.ArrayList;
 
-import controller.ClientConnection;
 
 public class ServerInfo {
 	private static ArrayList<ClientConnection> clientes = new ArrayList<ClientConnection>();

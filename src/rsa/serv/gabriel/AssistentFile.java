@@ -1,4 +1,4 @@
-package model;
+package rsa.serv.gabriel;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AssistentFile {
- 
+
 	private String folderFile;
-	private String nameFile; 
+	private String nameFile;
 	private List<String> linesFiles = new ArrayList<>();
 	private File file;
 	/**
@@ -77,15 +77,16 @@ public class AssistentFile {
 		}
 	}
 	
-//	public static void main(String[] args) {// C:/keys/public.key
-//		AssistentFile f = new AssistentFile("C:/Arquivos", "testinho.txt");
-//		f.write("texto1");
-//		f.write("texto2");
-//		f.write("texto3");
-//		f.write("texto2");
-//		
-//		System.out.println(f.getLastLineAsString());
-//	}
+	public static void main(String[] args) {// C:/keys/public.key
+		AssistentFile f = new AssistentFile("C:/Arquivos", "testinho.txt");
+		f.write("texto1");
+		f.write("texto2");
+		f.write("texto3");
+		f.write("texto2");
+		
+		System.out.println(f.getLastLineAsString());
+	}
+
 
 	public String getFolderFile() {
 		return folderFile;
